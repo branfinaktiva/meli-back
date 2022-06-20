@@ -13,6 +13,7 @@
     <None Remove="Contracts\" />
     <None Remove="Services\Location\" />
     <None Remove="Services\Message\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -20,6 +21,7 @@
     <Folder Include="Contracts\" />
     <Folder Include="Services\Location\" />
     <Folder Include="Services\Message\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
