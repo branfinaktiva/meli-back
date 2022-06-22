@@ -31,18 +31,40 @@ public class TopSecretController : ControllerBase
         }
     }
 
-    [HttpPost("/topsecret_split/{name}")]
-    public PositionSatelliteResponse TopSecretSplit(string name, Satellite satellite)
+    [HttpGet("/topsecret_split")]
+    public IActionResult TopSecretSplit()
     {
-        return new PositionSatelliteResponse
+        try
         {
-            Message = "Esto es un mensaje",
-            Position = new Position
-            {
-                X = 203,
-                Y = 2
-            }
-        };
+            var response = locationService.GetLocation();
+            return Ok(response);
+        }
+        catch (GeneralException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex);
+        }
+    }
+
+    [HttpPost("/topsecret_split/{name}")]
+    public IActionResult TopSecretSplit(string name, Satellite satellite)
+    {
+        try
+        {
+            var response = locationService.CreateLocation(name, satellite);
+            return Ok(response);
+        }
+        catch (GeneralException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex);
+        }
     }
 }
 

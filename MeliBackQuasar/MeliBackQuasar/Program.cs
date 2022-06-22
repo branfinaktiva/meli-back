@@ -7,12 +7,18 @@ builder.WebHost.UseKestrel(options =>
 
 });
 
+string strRetVal = "meliappback-firebase-adminsdk-1bc42-103fa09fc3.json";
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", strRetVal);
+
+
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 

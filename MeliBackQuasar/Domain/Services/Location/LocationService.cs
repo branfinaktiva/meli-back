@@ -1,10 +1,11 @@
-﻿using Domain.Services.Message;
+﻿using Infraestructure.Models;
 
 namespace Domain.Services.Location;
 
 public class LocationService : ILocationService
 {
     private readonly IMessageService messageService;
+    private readonly ILocationRepository locationRepository;
     public Position Kenobi = new()
     {
         X = -500,
@@ -24,9 +25,11 @@ public class LocationService : ILocationService
     };
 
 
-    public LocationService(IMessageService messageService)
+    public LocationService(IMessageService messageService,
+        ILocationRepository locationRepository)
     {
         this.messageService = messageService;
+        this.locationRepository = locationRepository;
     }
 
     public PositionSatelliteResponse ReadMessage(SatelliteRequest satelliteRequest)
@@ -51,6 +54,36 @@ public class LocationService : ILocationService
         Skywalker.R = satellites.First(p => p.Name.ToLower() == nameof(Skywalker).ToLower()).Distance;
         Sato.R = satellites.First(p => p.Name.ToLower() == nameof(Sato).ToLower()).Distance;
 
+        Position position = CalculatePositionNave();
+
+        return position;
+    }
+
+    public PositionSatelliteResponse GetLocation()
+    {
+        var satellites = locationRepository.GetLocation();
+        List<List<string>> messages = new List<List<string>>();
+        foreach (var item in satellites)
+        {
+            messages.Add(item.Message);
+        }
+
+        string message = messageService.GetMessage(messages);
+        Kenobi.R = satellites.First(p => p.Name.ToLower() == nameof(Kenobi).ToLower()).Distance;
+        Skywalker.R = satellites.First(p => p.Name.ToLower() == nameof(Skywalker).ToLower()).Distance;
+        Sato.R = satellites.First(p => p.Name.ToLower() == nameof(Sato).ToLower()).Distance;
+
+        Position position = CalculatePositionNave();
+
+        return new PositionSatelliteResponse()
+        {
+            Message = message,
+            Position = position
+        };
+    }
+
+    private Position CalculatePositionNave()
+    {
         var a = Math.Pow(Kenobi.X, 2) + Math.Pow(Kenobi.Y, 2) - Math.Pow(Kenobi.R, 2);
         var b = Math.Pow(Skywalker.X, 2) + Math.Pow(Skywalker.Y, 2) - Math.Pow(Skywalker.R, 2);
         var c = Math.Pow(Sato.X, 2) + Math.Pow(Sato.Y, 2) - Math.Pow(Sato.R, 2);
@@ -71,8 +104,20 @@ public class LocationService : ILocationService
             X = Math.Round(x),
             Y = Math.Round(y)
         };
-
         return position;
     }
+
+    public bool CreateLocation(string name, Satellite satellite)
+    {
+        LocationModel location = new()
+        {
+            Distance = satellite.Distance,
+            Message = satellite.Message,
+            Name = name,
+        };
+
+        return locationRepository.CreateOrUpdate(location);
+    }
+
 }
 
