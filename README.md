@@ -90,7 +90,7 @@ Esta capa expone los endpoint encargados de recibir las peticiones de la nave po
 ## Hosting
 El proyecto se encuentra alojado en un Google App Engine utilizando la siguiente Guia [Create-app](https://cloud.google.com/appengine/docs/flexible/dotnet/create-app)
 
-![Screenshot](https://github.com/branmous/meli-back/images/projectName.png?raw=true)
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/projectName.png?raw=true)
 
 ## Docker
 
@@ -105,7 +105,7 @@ docker push us-central1-docker.pkg.dev/meliappback/meli-app-api-repo/mebackquasa
 
 ## Proyecto
 
-![Screenshot](https://github.com/branmous/meli-back/images/project.png?raw=true)
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/project.png?raw=true)
 
 
 
