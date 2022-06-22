@@ -1,7 +1,4 @@
-﻿using Domain.Contracts;
-using Domain.Helpers;
-using Domain.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MeliBackQuasar.Controllers;
 
@@ -21,8 +18,8 @@ public class TopSecretController : ControllerBase
     {
         try
         {
-            var position = locationService.GetLocation(satelliteRequest.Satellites);
-            return Ok(position);
+            var response = locationService.ReadMessage(satelliteRequest);
+            return Ok(response);
         }
         catch (GeneralException ex)
         {
@@ -34,7 +31,7 @@ public class TopSecretController : ControllerBase
         }
     }
 
-    [HttpPost("topsecret_split/{name}")]
+    [HttpPost("/topsecret_split/{name}")]
     public PositionSatelliteResponse TopSecretSplit(string name, Satellite satellite)
     {
         return new PositionSatelliteResponse

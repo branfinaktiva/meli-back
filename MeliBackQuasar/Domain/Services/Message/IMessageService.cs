@@ -2,6 +2,6 @@
 
 public interface IMessageService
 {
-    string GetMessage(List<string> messages);
+    string GetMessage(List<List<string>> messages);
 }
 

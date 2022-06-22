@@ -1,9 +1,10 @@
-﻿using Domain.Helpers;
+﻿using Domain.Services.Message;
 
 namespace Domain.Services.Location;
 
 public class LocationService : ILocationService
 {
+    private readonly IMessageService messageService;
     public Position Kenobi = new()
     {
         X = -500,
@@ -23,8 +24,25 @@ public class LocationService : ILocationService
     };
 
 
-    public LocationService()
+    public LocationService(IMessageService messageService)
     {
+        this.messageService = messageService;
+    }
+
+    public PositionSatelliteResponse ReadMessage(SatelliteRequest satelliteRequest)
+    {
+        List<List<string>> messages = new List<List<string>>();
+        foreach (var item in satelliteRequest.Satellites)
+        {
+            messages.Add(item.Message);
+        }
+        string message = messageService.GetMessage(messages);
+        var position = GetLocation(satelliteRequest.Satellites);
+        return new PositionSatelliteResponse
+        {
+            Message = message,
+            Position = position
+        };
     }
 
     public Position GetLocation(List<Satellite> satellites)
@@ -50,8 +68,8 @@ public class LocationService : ILocationService
 
         var position = new Position
         {
-            X = x,
-            Y = y
+            X = Math.Round(x),
+            Y = Math.Round(y)
         };
 
         return position;

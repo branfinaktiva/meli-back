@@ -1,5 +1,12 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
+int hostPort = Int16.Parse(builder.Configuration["Host:Port"]);
+builder.WebHost.UseKestrel(options =>
+{
+    options.Listen(System.Net.IPAddress.Any, hostPort);
+
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -8,20 +15,31 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+
+
+
 var app = builder.Build();
 
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseRouting();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseEndpoints(endpoints =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    endpoints.MapGet("/", async context =>
+    {
+        context.Response.Redirect("swagger");
+    });
+});
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
