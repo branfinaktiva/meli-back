@@ -27,7 +27,7 @@ El proyecto esta compuesto por una arquitectura de 2 Capas: Dominio, Presentaci�
 ## Dominio 🔩
 Esta capa comprende todo lo relacionado con la logica que negocio del proyecto.
 La cual tiene dos Servicios:
-- LocationService: Este servicio esta encargado de realizar toda la logica para encontrar triangular la posición de la nave.
+- LocationService: Este servicio esta encargado de realizar toda la logica para triangular la posición de la nave.
 - MessageService: Este servicio se encarga de realizar la logica para encontrar el mensaje de auxilio.
 
 ## Presentación 🛠️
@@ -94,7 +94,7 @@ El proyecto se encuentra alojado en un Google App Engine utilizando la siguiente
 
 ## Docker
 
-Para la publicación del proyecto de ejecutaron los siguientes comandos de docker
+Para la publicación del proyecto se ejecutaron los siguientes comandos de docker
 
 ```sh
 cd MeliBackQuasar
