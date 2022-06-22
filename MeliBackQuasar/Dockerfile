@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MeliBackQuasar/MeliBackQuasar.csproj", "MeliBackQuasar/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Infraestructure/Infraestructure.csproj", "Infraestructure/"]
 RUN dotnet restore "MeliBackQuasar/MeliBackQuasar.csproj"
 COPY . .
 WORKDIR "/src/MeliBackQuasar"
