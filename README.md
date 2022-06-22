@@ -88,20 +88,25 @@ Esta capa expone los endpoint encargados de recibir las peticiones de la nave po
     ```
     
 ## Hosting
-El proyecto se encuentra alojado en un Google App Engine
+El proyecto se encuentra alojado en un Google App Engine utilizando la siguiente Guia [Create-app](https://cloud.google.com/appengine/docs/flexible/dotnet/create-app)
 
-FOTO
+![Screenshot](https://github.com/branmous/meli-back/images/projectName.png?raw=true)
 
-Puede ingregar dando click [aquí](https://mebackquasar-image-zeityctk4q-uc.a.run.app/swagger/index.html/)
+## Docker
+
+Para la publicación del proyecto de ejecutaron los siguientes comandos de docker
+
+```sh
+cd MeliBackQuasar
+docker build -t mebackquasar-image  -f Dockerfile .
+docker tag mebackquasar-image us-central1-docker.pkg.dev/meliappback/meli-app-api-repo/mebackquasar-image:latest
+docker push us-central1-docker.pkg.dev/meliappback/meli-app-api-repo/mebackquasar-image:latest
+```
+
+## Proyecto
+
+![Screenshot](https://github.com/branmous/meli-back/images/project.png?raw=true)
 
 
-## Investigación
 
-Teoria .....
-
-
-https://acolita.com/como-funcionan-los-dispositivos-gps-trilateracion-vs-triangulacion/#:~:text=A%20medida%20que%20los%20sat%C3%A9lites,GPS%20no%20implica%20ning%C3%BAn%20%C3%A1ngulo
-
-http://cecilia-urbina.blogspot.com/2013/05/geolocalizacion-por-trilateracion.html
-
-https://github.com/Messaoud-Boudjada/PyTrilateration/blob/master/Trilateration.py
+Puede ingresar dando click [aquí](https://mebackquasar-image-zeityctk4q-uc.a.run.app/swagger/index.html)
