@@ -13,12 +13,17 @@ public class TopSecretController : ControllerBase
         this.locationService = locationService;
     }
 
+    /// <summary>
+    /// Controlador encargado de obtener la posicion de la nave
+    /// </summary>
+    /// <param name="satelliteRequest">Modelo de satelites</param>
+    /// <returns>Retorna Posicion (x,y) y mensaje</returns>
     [HttpPost]
     public IActionResult Post(SatelliteRequest satelliteRequest)
     {
         try
         {
-            var response = locationService.ReadMessage(satelliteRequest);
+            var response = locationService.GetLocation(satelliteRequest);
             return Ok(response);
         }
         catch (GeneralException ex)
@@ -31,6 +36,10 @@ public class TopSecretController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Controlador encargado de obtener la posicion de la nave desde base de datos
+    /// </summary>
+    /// <returns>Retorna Posicion (x,y) y mensaje</returns>
     [HttpGet("/topsecret_split")]
     public IActionResult TopSecretSplit()
     {
@@ -49,8 +58,14 @@ public class TopSecretController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Controlador se Encarga de guardar la informacion enviada de la nave
+    /// </summary>
+    /// <param name="name">Nombre de los Satelites: Kenobi, Skywalker, Sato</param>
+    /// <param name="satellite">Los parametros de los satelites</param>
+    /// <returns>True si se almaceno correctamente</returns>
     [HttpPost("/topsecret_split/{name}")]
-    public IActionResult TopSecretSplit(string name, Satellite satellite)
+    public IActionResult TopSecretSplit(string name, SatelliteSplit satellite)
     {
         try
         {

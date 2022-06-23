@@ -6,6 +6,7 @@ public class LocationService : ILocationService
 {
     private readonly IMessageService messageService;
     private readonly ILocationRepository locationRepository;
+    private readonly List<List<string>> messages;
     public Position Kenobi = new()
     {
         X = -500,
@@ -30,17 +31,19 @@ public class LocationService : ILocationService
     {
         this.messageService = messageService;
         this.locationRepository = locationRepository;
+        messages = new List<List<string>>();
     }
 
-    public PositionSatelliteResponse ReadMessage(SatelliteRequest satelliteRequest)
+    public PositionSatelliteResponse GetLocation(SatelliteRequest satelliteRequest)
     {
-        List<List<string>> messages = new List<List<string>>();
-        foreach (var item in satelliteRequest.Satellites)
-        {
-            messages.Add(item.Message);
-        }
+        messages.AddRange(satelliteRequest.Satellites.Select(s => s.Message));
         string message = messageService.GetMessage(messages);
-        var position = GetLocation(satelliteRequest.Satellites);
+        Kenobi.R = satelliteRequest.Satellites.First(p => p.Name.ToLower() == nameof(Kenobi).ToLower()).Distance;
+        Skywalker.R = satelliteRequest.Satellites.First(p => p.Name.ToLower() == nameof(Skywalker).ToLower()).Distance;
+        Sato.R = satelliteRequest.Satellites.First(p => p.Name.ToLower() == nameof(Sato).ToLower()).Distance;
+
+        Position position = CalculateTrilateration();
+
         return new PositionSatelliteResponse
         {
             Message = message,
@@ -48,32 +51,18 @@ public class LocationService : ILocationService
         };
     }
 
-    public Position GetLocation(List<Satellite> satellites)
-    {
-        Kenobi.R = satellites.First(p => p.Name.ToLower() == nameof(Kenobi).ToLower()).Distance;
-        Skywalker.R = satellites.First(p => p.Name.ToLower() == nameof(Skywalker).ToLower()).Distance;
-        Sato.R = satellites.First(p => p.Name.ToLower() == nameof(Sato).ToLower()).Distance;
-
-        Position position = CalculatePositionNave();
-
-        return position;
-    }
-
     public PositionSatelliteResponse GetLocation()
     {
         var satellites = locationRepository.GetLocation();
-        List<List<string>> messages = new List<List<string>>();
-        foreach (var item in satellites)
-        {
-            messages.Add(item.Message);
-        }
 
+        messages.AddRange(satellites.Select(s => s.Message));
         string message = messageService.GetMessage(messages);
+
         Kenobi.R = satellites.First(p => p.Name.ToLower() == nameof(Kenobi).ToLower()).Distance;
         Skywalker.R = satellites.First(p => p.Name.ToLower() == nameof(Skywalker).ToLower()).Distance;
         Sato.R = satellites.First(p => p.Name.ToLower() == nameof(Sato).ToLower()).Distance;
 
-        Position position = CalculatePositionNave();
+        Position position = CalculateTrilateration();
 
         return new PositionSatelliteResponse()
         {
@@ -82,7 +71,23 @@ public class LocationService : ILocationService
         };
     }
 
-    private Position CalculatePositionNave()
+    public bool CreateLocation(string name, SatelliteSplit satellite)
+    {
+        LocationModel location = new()
+        {
+            Distance = satellite.Distance,
+            Message = satellite.Message,
+            Name = name,
+        };
+
+        return locationRepository.CreateOrUpdate(location);
+    }
+
+    /// <summary>
+    /// Metodo encargado de calcular la posicion de la nave 
+    /// </summary>
+    /// <returns>Posicion x & y</returns>
+    private Position CalculateTrilateration()
     {
         var a = Math.Pow(Kenobi.X, 2) + Math.Pow(Kenobi.Y, 2) - Math.Pow(Kenobi.R, 2);
         var b = Math.Pow(Skywalker.X, 2) + Math.Pow(Skywalker.Y, 2) - Math.Pow(Skywalker.R, 2);
@@ -105,18 +110,6 @@ public class LocationService : ILocationService
             Y = Math.Round(y)
         };
         return position;
-    }
-
-    public bool CreateLocation(string name, Satellite satellite)
-    {
-        LocationModel location = new()
-        {
-            Distance = satellite.Distance,
-            Message = satellite.Message,
-            Name = name,
-        };
-
-        return locationRepository.CreateOrUpdate(location);
     }
 
 }
