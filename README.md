@@ -77,6 +77,51 @@ Esta capa expone los endpoint encargados de recibir las peticiones de la nave po
     Respuesta Code 400
         No hay información suficiente
     
+    Copiar Curl
+    ```curl -X 'POST' \
+  'https://mebackquasar-image-zeityctk4q-uc.a.run.app/TopSecret' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "satellites": [
+    {
+      "name": "kenobi",
+      "distance": 100,
+      "message": [
+        "este",
+        "",
+        "",
+        "mensaje",
+        ""
+      ]
+    },
+    {
+      "name": "skywalker",
+      "distance": 115.5,
+      "message": [
+        "",
+        "es",
+        "",
+        "",
+        "secreto"
+      ]
+    },
+    {
+      "name": "sato",
+      "distance": 142.7,
+      "message": [
+        "este",
+        "",
+        "un",
+        "",
+        ""
+      ]
+    }
+  ]
+}'
+    
+    ```
+    
 * /topsecret_split/{name} - Este Servicio recibe el siguiente formato:
     ```
     {
