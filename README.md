@@ -3,16 +3,32 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-A continuación se realizará una descripcion tecnica de la solucion desarrollada para la prueba tecnica de MELI Fuego de Quasar
+A continuación se realizará una descripción técnica de la solución desarrollada para la prueba técnica de MELI Fuego de Quasar
+
+## Solución Teoria
+Para la solución de la prueba se investigo la geolocalización por Trilateración la cual implica la medición de distancias.
+esta consiste en tener tres satelites en diferentes puntos conocidos en el espacio, para el ejemplo nuestros los tres satelites tienen la siguentes posiciones:
+- Kenobi: [-500, -200] 
+- Skywalker: [100, -100] 
+- Sato: [500, 100] 
+
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/satellites.png?raw=true)
+
+Cada Satelite emite una señal para su receptor conocida como distancia, esta forma un círculo igual en todas las direcciones, lo cual determina que la posicion podria estar en cualquier parte de este radio específico.
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/satellitesradio.png?raw=true)
+
+##Formula
+De acuerdo al metodo matematico la formula es la siguiente
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/formula.png?raw=true)
 
 
-## Estructura del la solución
+## Solcución Técnica
 | Pre Requisitos |
 | ------ |
 | [Visual Studio 2022](https://code.visualstudio.com/download) | [Visual]|
 | [Net6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) |
 
-Nota: Tambien se puede utilizar [Visual Studio Code](https://code.visualstudio.com/download)
+Nota: También se puede utilizar [Visual Studio Code](https://code.visualstudio.com/download)
 
 ## Ejecución
 ```sh
@@ -23,12 +39,25 @@ Open Browser http://localhost:5175/swagger/index.html
 ```
 
 ## Arquitectura
-El proyecto esta compuesto por una arquitectura de 2 Capas: Dominio, Presentación en la cual se realizara una descripción de cada una de las capas
+El proyecto está compuesto por una arquitectura de 3 Capas: Infraestructura, Dominio, Presentación en la cual se realizara una descripción de cada una de las capas
+## Infraestructura 🔩
+Esta capa comprende todo lo relacionado con el modelo de base de datos y los repositorios que generan todo el Crud.
+Para este caso se creo un Modelo llamado Location el cual almacena la informacion de los satelites con la siguiente estrucutura:
+| Nombre del campo | Tipo de dato |
+| ------ | ------ |
+| Name | String |
+| Distance | Double |
+| Message | Array String |
+
+La base de datos que se utilizo para almacenar los datos se llama Datastore de Google App Engine 
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/datastore.png?raw=true)
+
+
 ## Dominio 🔩
-Esta capa comprende todo lo relacionado con la logica que negocio del proyecto.
+Esta capa comprende todo lo relacionado con la lógica que negocio del proyecto.
 La cual tiene dos Servicios:
-- LocationService: Este servicio esta encargado de realizar toda la logica para triangular la posición de la nave.
-- MessageService: Este servicio se encarga de realizar la logica para encontrar el mensaje de auxilio.
+- LocationService: Este servicio está encargado de realizar toda la lógica para triangular la posición de la nave.
+- MessageService: Este servicio se encarga de realizar la lógica para encontrar el mensaje de auxilio.
 
 ## Presentación 🛠️
 Esta capa expone los endpoint encargados de recibir las peticiones de la nave portacarga.
