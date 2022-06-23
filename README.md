@@ -134,7 +134,7 @@ docker push us-central1-docker.pkg.dev/meliappback/meli-app-api-repo/mebackquasa
 
 ## Proyecto
 
-![Screenshot](https://github.com/branmous/meli-back/blob/main/images/project.png?raw=true)
+![Screenshot](https://github.com/branmous/meli-back/blob/main/images/projectv2.png?raw=true)
 
 
 
